@@ -2,10 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\GuruResource\Pages;
-use App\Filament\Resources\GuruResource\RelationManagers;
-use App\Models\Guru;
-use App\Models\Kelas;
+use App\Filament\Resources\AbsensiResource\Pages;
+use App\Filament\Resources\AbsensiResource\RelationManagers;
+use App\Models\Absensi;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -14,9 +13,9 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class GuruResource extends Resource
+class AbsensiResource extends Resource
 {
-    protected static ?string $model = Guru::class;
+    protected static ?string $model = Absensi::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -24,14 +23,13 @@ class GuruResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('nama')
+                Forms\Components\DatePicker::make('tanggal')
+                    ->required(),
+                Forms\Components\TextInput::make('status')
+                    ->required(),
+                Forms\Components\TextInput::make('siswa_id')
                     ->required()
-                    ->maxLength(255),
-                Forms\Components\Select::make('kelas_id')
-                    ->label('Kelas')
-                    ->options(Kelas::all()->pluck('nama_kelas', 'id'))
-                    ->required()
-                    ->searchable(),
+                    ->numeric(),
             ]);
     }
 
@@ -39,15 +37,11 @@ class GuruResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('nama')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('user_id')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('tanggal')
+                    ->date()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('kelas_id')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('status_id')
+                Tables\Columns\TextColumn::make('status'),
+                Tables\Columns\TextColumn::make('siswa_id')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
@@ -82,9 +76,9 @@ class GuruResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListGurus::route('/'),
-            'create' => Pages\CreateGuru::route('/create'),
-            'edit' => Pages\EditGuru::route('/{record}/edit'),
+            'index' => Pages\ListAbsensis::route('/'),
+            'create' => Pages\CreateAbsensi::route('/create'),
+            'edit' => Pages\EditAbsensi::route('/{record}/edit'),
         ];
     }
 }

@@ -13,18 +13,17 @@ use Illuminate\Notifications\Notifiable;
 class User extends Authenticatable implements FilamentUser
 {
     use HasFactory, Notifiable;
-
-    const role_admin = 'admin';
-    const role_gurus = 'guru';
-    const role_siswas = 'siswa';
-
-    const roles = [
-        self::role_admin => 'admin',
-        self::role_gurus => 'guru',
-        self::role_siswas => 'siswa',
+    
+    const ROLE_ADMIN = 'ADMIN';
+    const ROLE_GURU = 'GURU';
+    const ROLE_SISWA = 'SISWA';
+    
+    const ROLES  = [
+        self::ROLE_ADMIN => 'Admin',
+        self::ROLE_GURU => 'Guru',
+        self::ROLE_SISWA => 'Siswa',
     ];
 
-    const role_default = 'siswa';
 
     public function siswa()
     {
@@ -37,15 +36,15 @@ class User extends Authenticatable implements FilamentUser
     }
 
     public function isAdmin() {
-        return $this->role === self::role_admin;
+        return $this->role === self::ROLE_ADMIN;
     }
 
     public function isGurus() {
-        return $this->role === self::role_gurus;
+        return $this->role === self::ROLE_GURU;
     }
 
     public function isSiwas() {
-        return $this->role === self::role_siswas;
+        return $this->role === self::ROLE_SISWA;
     }
 
     /**
@@ -78,5 +77,29 @@ class User extends Authenticatable implements FilamentUser
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    // Relasi ke tabel 'siswa'
+    public function siswas()
+    {
+        return $this->hasOne(Siswa::class);
+    }
+
+    // Relasi ke tabel 'guru'
+    public function gurus()
+    {
+        return $this->hasOne(Guru::class);
+    }
+
+    // Relasi ke tabel 'wali_kelas'
+    public function waliKelas()
+    {
+        return $this->hasOne(WaliKelas::class);
+    }
+
+    // Relasi ke tabel 'wali_murid'
+    public function waliMurids()
+    {
+        return $this->hasOne(WaliMurid::class);
     }
 }

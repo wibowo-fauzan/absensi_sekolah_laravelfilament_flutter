@@ -2,9 +2,8 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\GuruResource\Pages;
-use App\Filament\Resources\GuruResource\RelationManagers;
-use App\Models\Guru;
+use App\Filament\Resources\KelasResource\Pages;
+use App\Filament\Resources\KelasResource\RelationManagers;
 use App\Models\Kelas;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -14,9 +13,9 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class GuruResource extends Resource
+class KelasResource extends Resource
 {
-    protected static ?string $model = Guru::class;
+    protected static ?string $model = Kelas::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -24,14 +23,9 @@ class GuruResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('nama')
+                Forms\Components\TextInput::make('nama_kelas')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\Select::make('kelas_id')
-                    ->label('Kelas')
-                    ->options(Kelas::all()->pluck('nama_kelas', 'id'))
-                    ->required()
-                    ->searchable(),
             ]);
     }
 
@@ -39,17 +33,8 @@ class GuruResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('nama')
+                Tables\Columns\TextColumn::make('nama_kelas')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('user_id')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('kelas_id')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('status_id')
-                    ->numeric()
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -82,9 +67,9 @@ class GuruResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListGurus::route('/'),
-            'create' => Pages\CreateGuru::route('/create'),
-            'edit' => Pages\EditGuru::route('/{record}/edit'),
+            'index' => Pages\ListKelas::route('/'),
+            'create' => Pages\CreateKelas::route('/create'),
+            'edit' => Pages\EditKelas::route('/{record}/edit'),
         ];
     }
 }
